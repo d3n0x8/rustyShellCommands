@@ -3,29 +3,15 @@ use std::fs::*;
 
 #[derive(Parser)]
 struct Parameters {
-    param: Option<String>,
+    param: String,
 }
 
 fn main() {
     let args = Parameters::parse();
-    let param = match args.param {
-        Some(param) => param,
-        None => {
-            println!("Erreur : aucun argument fourni. Veuillez entrer une commande.");
-            return;
-        }
-    };
 
-    let mut command = param.split_whitespace();
-    let commande = match command.next() {
-        Some(commande) => commande,
-        None => {
-            println!("Erreur : aucune commande fournie.");
-            return;
-        }
-    };
+    let commande = &args.param;
 
-    match commande {
+    match commande.as_str() {
         "ls" => ls(),
         _ => println!("Command not found"),
     };
@@ -42,6 +28,6 @@ fn ls() {
                 }
             }
         }
-        Err(e) => eprintln!("Error reading directory: {}", e),
+        Err(e) => println!("Error reading directory: {}", e),
     }
 }
